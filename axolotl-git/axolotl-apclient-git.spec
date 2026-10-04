@@ -4,7 +4,7 @@
 
 Name:           axolotl-apclient-git
 Version:        0.1.6~git20260826.a7c2620
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Development snapshot of the Archipelago multiworld text client
 
 # Axolotl, Dear ImGui, sol2, and Lua are MIT; IXWebSocket is BSD-3-Clause.
@@ -59,6 +59,9 @@ tar -xf %{SOURCE1}
 tar -xf %{SOURCE2}
 tar -xf %{SOURCE3}
 tar -xf %{SOURCE4}
+# GitHub's archive contains empty directories for the gitlinks. Remove those
+# placeholders so the extracted repositories are not moved one level too deep.
+rm -rf thirdparty/IXWebSocket thirdparty/imgui thirdparty/lua thirdparty/sol2
 mv IXWebSocket-%{ixwebsocket_commit} thirdparty/IXWebSocket
 mv imgui-%{imgui_commit} thirdparty/imgui
 mv lua-%{lua_commit} thirdparty/lua
@@ -94,5 +97,8 @@ desktop-file-validate \
 
 
 %changelog
+* Sun Oct 04 2026 Fedora COPR Maintainer <noreply@example.com> - 0.1.6~git20260826.a7c2620-2
+- Fix reconstruction of vendored submodules from GitHub archives
+
 * Sun Oct 04 2026 Fedora COPR Maintainer <noreply@example.com> - 0.1.6~git20260826.a7c2620-1
 - Package upstream development snapshot a7c2620
