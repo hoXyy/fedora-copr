@@ -1,0 +1,60 @@
+{
+  "packages": [
+    {
+      "name": "axolotl-apclient",
+      "type": "github-stable-release",
+      "repository": "mooinglemur/axolotl",
+      "spec": "axolotl/axolotl-apclient.spec",
+      "tag_regex": "^v(?P<version>\\d+\\.\\d+\\.\\d+)$",
+      "submodules": {
+        "thirdparty/IXWebSocket": "ixwebsocket_commit",
+        "thirdparty/imgui": "imgui_commit",
+        "thirdparty/lua": "lua_commit",
+        "thirdparty/sol2": "sol2_commit"
+      }
+    },
+    {
+      "name": "sc-controller",
+      "type": "github-stable-release",
+      "repository": "C0rn3j/sc-controller",
+      "spec": "sc-controller/sc-controller.spec",
+      "tag_regex": "^v(?P<version>\\d+\\.\\d+\\.\\d+)$"
+    },
+    {
+      "name": "axolotl-apclient-git",
+      "type": "github-snapshot",
+      "repository": "mooinglemur/axolotl",
+      "branch": "main",
+      "spec": "axolotl-git/axolotl-apclient-git.spec",
+      "commit_macro": "commit",
+      "short_commit_macro": "shortcommit",
+      "commit_date_macro": "commitdate",
+      "base_version": {
+        "file": "CMakeLists.txt",
+        "regex": "project\\(Axolotl VERSION (?P<version>\\d+\\.\\d+\\.\\d+)"
+      },
+      "version_format": "{base_version}~git{commit_date}.{short_commit}",
+      "submodules": {
+        "thirdparty/IXWebSocket": "ixwebsocket_commit",
+        "thirdparty/imgui": "imgui_commit",
+        "thirdparty/lua": "lua_commit",
+        "thirdparty/sol2": "sol2_commit"
+      }
+    },
+    {
+      "name": "livesplit-one-gtk-git",
+      "type": "github-snapshot",
+      "repository": "hoXyy/livesplit-one-gtk",
+      "branch": "main",
+      "spec": "livesplit-one-gtk-git/livesplit-one-gtk-git.spec",
+      "commit_macro": "commit",
+      "short_commit_macro": "shortcommit",
+      "commit_date_macro": "commitdate",
+      "base_version": {
+        "file": "Cargo.toml",
+        "regex": "^version\\s*=\\s*\\\"(?P<version>\\d+\\.\\d+\\.\\d+)\\\""
+      },
+      "version_format": "{base_version}~git{commit_date}.{short_commit}"
+    }
+  ]
+}
