@@ -2,7 +2,7 @@
 
 Name:           sc-controller
 Version:        1.0.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        User-mode driver and configuration GUI for game controllers
 
 # SC Controller is GPL-2.0-only. The bundled ioctl-opt module is
@@ -20,6 +20,7 @@ BuildRequires:  gettext
 BuildRequires:  libappstream-glib
 BuildRequires:  python3-devel >= 3.12
 BuildRequires:  python3-installer
+BuildRequires:  python3-pip
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-setuptools_scm
 BuildRequires:  python3-wheel
@@ -106,6 +107,9 @@ xmllint --noout \
 
 
 %changelog
+* Mon Oct 05 2026 Fedora COPR Maintainer <noreply@example.com> - 1.0.5-2
+- Add the missing python3-pip build dependency
+
 * Sun Oct 04 2026 Fedora COPR Maintainer <noreply@example.com> - 1.0.5-1
 - Fix many issues with cross-platform support - Windows support is now possible
   as a result
