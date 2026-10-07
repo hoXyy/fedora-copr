@@ -14,13 +14,6 @@
       }
     },
     {
-      "name": "sc-controller",
-      "type": "github-stable-release",
-      "repository": "C0rn3j/sc-controller",
-      "spec": "sc-controller/sc-controller.spec",
-      "tag_regex": "^v(?P<version>\\d+\\.\\d+\\.\\d+)$"
-    },
-    {
       "name": "axolotl-apclient-git",
       "type": "github-snapshot",
       "repository": "mooinglemur/axolotl",
