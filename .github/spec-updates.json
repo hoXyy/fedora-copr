@@ -48,6 +48,13 @@
         "regex": "^version\\s*=\\s*\\\"(?P<version>\\d+\\.\\d+\\.\\d+)\\\""
       },
       "version_format": "{base_version}~git{commit_date}.{short_commit}"
+    },
+    {
+      "name": "makima",
+      "type": "github-stable-release",
+      "repository": "cyber-sushi/makima",
+      "spec": "makima/makima.spec",
+      "tag_regex": "^v(?P<version>\\d+\\.\\d+\\.\\d+)$"
     }
   ]
 }
