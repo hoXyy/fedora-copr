@@ -6,6 +6,8 @@
       "repository": "mooinglemur/axolotl",
       "spec": "axolotl/axolotl-apclient.spec",
       "tag_regex": "^v(?P<version>\\d+\\.\\d+\\.\\d+)$",
+      "commit_macro": "source_commit",
+      "short_commit_macro": "shortcommit",
       "submodules": {
         "thirdparty/IXWebSocket": "ixwebsocket_commit",
         "thirdparty/imgui": "imgui_commit",

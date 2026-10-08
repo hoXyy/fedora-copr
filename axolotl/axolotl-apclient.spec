@@ -1,12 +1,17 @@
 Name:           axolotl-apclient
 Version:        0.1.5
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Archipelago multiworld text client
 
 # Axolotl, Dear ImGui, sol2, and Lua are MIT; IXWebSocket is BSD-3-Clause.
 License:        MIT AND BSD-3-Clause
 URL:            https://github.com/mooinglemur/axolotl
 Source0:        %{url}/archive/refs/tags/v%{version}/axolotl-%{version}.tar.gz
+
+# Commit referenced by the release tag.  GitHub source archives omit .git, so
+# pass this revision through the upstream version generator's fallback path.
+%global source_commit   70defc1db3c1633c037eb5f4575ea091b4f5cfe2
+%global shortcommit     70defc1
 
 # GitHub-generated archives do not contain git submodule contents. These
 # revisions are the gitlinks recorded by the v0.1.5 tag.
@@ -57,6 +62,10 @@ mv IXWebSocket-%{ixwebsocket_commit} thirdparty/IXWebSocket
 mv imgui-%{imgui_commit} thirdparty/imgui
 mv lua-%{lua_commit} thirdparty/lua
 mv sol2-%{sol2_commit} thirdparty/sol2
+# Preserve upstream's normal git detection while providing the known revision
+# when building from this git-less source archive.
+sed -i 's/set(GIT_HASH "unknown")/set(GIT_HASH "%{shortcommit}")/' \
+    tools/generate_version.cmake
 
 
 %build
@@ -64,7 +73,9 @@ mv sol2-%{sol2_commit} thirdparty/sol2
     -DAXOLOTL_IGNORE_DIRTY=ON \
     -DAXOLOTL_OFFICIAL_RELEASE=ON \
     -DBUILD_SHARED_LIBS=OFF \
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo
+    -DUSE_MBED_TLS=OFF \
+    -DUSE_OPEN_SSL=ON \
+    -DCMAKE_BUILD_TYPE=Release
 %cmake_build
 
 
@@ -90,6 +101,10 @@ desktop-file-validate \
 
 
 %changelog
+* Thu Oct 08 2026 Fedora COPR Maintainer <noreply@example.com> - 0.1.5-4
+- Match the upstream official Linux release build options
+- Embed the release tag's git commit instead of reporting it as unknown
+
 * Thu Oct 08 2026 Fedora COPR Maintainer <noreply@example.com> - 0.1.5-3
 - Statically link bundled IXWebSocket to avoid an unresolved shared-library dependency
 

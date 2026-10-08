@@ -220,6 +220,17 @@ def apply_submodules(
     return text
 
 
+def apply_source_revision(
+    text: str, package: dict[str, Any], commit: str
+) -> str:
+    if commit_macro := package.get("commit_macro"):
+        text = set_macro(text, commit_macro, commit)
+    if short_commit_macro := package.get("short_commit_macro"):
+        length = package.get("short_commit_length", 7)
+        text = set_macro(text, short_commit_macro, commit[:length])
+    return text
+
+
 def update_release(package: dict[str, Any], text: str) -> tuple[str, str]:
     tags = github_api(package, "/tags?per_page=100")
     candidates = []
@@ -235,6 +246,7 @@ def update_release(package: dict[str, Any], text: str) -> tuple[str, str]:
 
     _, version, commit = max(candidates)
     updated = set_spec_version(text, version)
+    updated = apply_source_revision(updated, package, commit)
     updated = apply_submodules(updated, package, commit)
     return updated, f"Update to upstream release {version}"
 
@@ -258,8 +270,11 @@ def update_stable_release(
         raise RuntimeError("no stable releases matched tag_regex")
 
     _, version, ref, body = max(candidates)
+    encoded_ref = urllib.parse.quote(ref, safe="")
+    commit = github_api(package, f"/commits/{encoded_ref}")["sha"]
     updated = set_spec_version(text, version)
-    updated = apply_submodules(updated, package, ref)
+    updated = apply_source_revision(updated, package, commit)
+    updated = apply_submodules(updated, package, commit)
     return updated, release_changelog(body, version)
 
 

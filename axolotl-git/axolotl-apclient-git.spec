@@ -4,7 +4,7 @@
 
 Name:           axolotl-apclient-git
 Version:        0.1.6~git20260826.a7c2620
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Development snapshot of the Archipelago multiworld text client
 
 # Axolotl, Dear ImGui, sol2, and Lua are MIT; IXWebSocket is BSD-3-Clause.
@@ -66,13 +66,20 @@ mv IXWebSocket-%{ixwebsocket_commit} thirdparty/IXWebSocket
 mv imgui-%{imgui_commit} thirdparty/imgui
 mv lua-%{lua_commit} thirdparty/lua
 mv sol2-%{sol2_commit} thirdparty/sol2
+# Preserve upstream's normal git detection while providing the known revision
+# when building from this git-less source archive.
+sed -i 's/set(GIT_HASH "unknown")/set(GIT_HASH "%{shortcommit}")/' \
+    tools/generate_version.cmake
 
 
 %build
 %cmake -G Ninja \
     -DAXOLOTL_IGNORE_DIRTY=ON \
+    -DAXOLOTL_OFFICIAL_RELEASE=OFF \
     -DBUILD_SHARED_LIBS=OFF \
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo
+    -DUSE_MBED_TLS=OFF \
+    -DUSE_OPEN_SSL=ON \
+    -DCMAKE_BUILD_TYPE=Release
 %cmake_build
 
 
@@ -98,6 +105,10 @@ desktop-file-validate \
 
 
 %changelog
+* Thu Oct 08 2026 Fedora COPR Maintainer <noreply@example.com> - 0.1.6~git20260826.a7c2620-4
+- Match the upstream top-of-tree Linux build options
+- Embed the snapshot's git commit instead of reporting it as unknown
+
 * Thu Oct 08 2026 Fedora COPR Maintainer <noreply@example.com> - 0.1.6~git20260826.a7c2620-3
 - Statically link bundled IXWebSocket to avoid an unresolved shared-library dependency
 
